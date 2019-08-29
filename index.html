@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script>
+            function timeToDelta(time) {
+                var msPerDay = 24 * 60 * 60 * 1000;
+                var days = Math.round(time / msPerDay);
+                var months = 0;
+                var years = 0;
+                while (days >= 30) {
+                    days -= 30;
+                    months += 1;
+                }
+                while (months >= 12) {
+                    months -= 12;
+                    years += 1;
+                }
+
+                return `${years} Years, ${months} Months, ${days} Days`
+            }
+
+            fetch("https://launchermeta.mojang.com/mc/game/version_manifest.json")
+                .then(res => res.json())
+                .then((j) => {
+                    if (window.location.search) {
+                        var param = window.location.search.substr(1)
+                    } else {
+                        var param = ""
+                    }
+                    j.versions.forEach(version => {
+                        if ( version.id == param || (param == "" && version.type == "release")) {
+                            let delta = new Date() - Date.parse(version.releaseTime)
+                            let age = `${version.id} is ${timeToDelta(delta)} old.`
+                            console.log(age)
+                            document.write(`<center><h1>${age}</h1></center>`)
+                        }
+                    });
+                });
+            
+        </script>
+    </head>
+    <body>
+        <div id="content"></div> 
+    </body>
+</html>
