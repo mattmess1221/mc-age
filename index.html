@@ -31,7 +31,7 @@
                     j.versions.forEach(version => {
                         if ( version.id == param || (param == "" && version.type == "release")) {
                             let delta = new Date() - Date.parse(version.releaseTime)
-                            let age = `${version.id} is ${timeToDelta(delta)} old.`
+                            let age = `Minecraft ${version.id} is ${timeToDelta(delta)} old.`
                             console.log(age)
                             document.write(`<center><h1>${age}</h1></center>`)
                         }
@@ -40,7 +40,4 @@
             
         </script>
     </head>
-    <body>
-        <div id="content"></div> 
-    </body>
 </html>
