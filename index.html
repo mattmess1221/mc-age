@@ -32,16 +32,7 @@
                 }
             }
 
-            for (var x in defaults) {
-                if (!query.hasOwnProperty(x)) {
-                    query[x] = defaults[x];
-                    if (!Array.isArray(query[x])) {
-                        query[x] = [query[x]];
-                    }
-
-                }
-            }
-            return query;
+            return query || defaults;
         }
 
         function TimeDelta(time) {
