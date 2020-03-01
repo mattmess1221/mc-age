@@ -32,7 +32,7 @@
                 }
             }
 
-            return query || defaults;
+            return Object.keys(query).length > 0 ? query : defaults;
         }
 
         function TimeDelta(time) {
