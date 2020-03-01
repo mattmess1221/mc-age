@@ -1,43 +1,117 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <script>
-            function timeToDelta(time) {
-                var msPerDay = 24 * 60 * 60 * 1000;
-                var days = Math.round(time / msPerDay);
-                var months = 0;
-                var years = 0;
-                while (days >= 30) {
-                    days -= 30;
-                    months += 1;
-                }
-                while (months >= 12) {
-                    months -= 12;
-                    years += 1;
-                }
 
-                return `${years} Years, ${months} Months, ${days} Days`
+<head>
+    <meta charset="utf-8">
+    <style>
+        a:link,
+        a:visited {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: white;
+            background-color: grey;
+        }
+        .version {
+            margin: 0;
+        }
+    </style>
+    <script>
+        function parseQuery(queryString, defaults = {}) {
+            var query = {};
+            var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
+            for (var i = 0; i < pairs.length; i++) {
+                var pair = pairs[i].split('=');
+                var key = decodeURIComponent(pair[0]);
+                var val = decodeURIComponent(pair[1] || '');
+                if (key) {
+                    query[key] = val.split(',');
+                }
             }
 
-            fetch("https://launchermeta.mojang.com/mc/game/version_manifest.json")
-                .then(res => res.json())
-                .then((j) => {
-                    if (window.location.search) {
-                        var param = window.location.search.substr(1)
-                    } else {
-                        var param = ""
+            for (var x in defaults) {
+                if (!query.hasOwnProperty(x)) {
+                    query[x] = defaults[x];
+                    if (!Array.isArray(query[x])) {
+                        query[x] = [query[x]];
                     }
-                    j.versions.forEach(version => {
-                        if ( version.id == param || (param == "" && version.type == "release")) {
-                            let delta = new Date() - Date.parse(version.releaseTime)
-                            let age = `Minecraft ${version.id} is ${timeToDelta(delta)} old.`
-                            console.log(age)
-                            document.write(`<center><h1>${age}</h1></center>`)
-                        }
-                    });
-                });
+
+                }
+            }
+            return query;
+        }
+
+        function TimeDelta(time) {
+            time /= 24 * 60 * 60 * 1000;
+            this.years = Math.floor(time / 365.25);
+
+            time %= 365.25;
+            this.months = Math.floor(time / 30.5);
+
+            time %= 30.5;
+            this.days = Math.floor(time);
+        }
+
+        TimeDelta.prototype.toString = function () {
+            let parts = [];
+            ["years", "months", "days"].forEach(p => {
+                var value = this[p];
+                var key = p.substr(0, p.length-1);
+                if (value) {
+                    parts.push(`${value} ${key}${value > 1 ? "s" : ""}`);
+                }
+            });
+            return parts.join(", ");
+        };
+        
+        async function init() {
             
-        </script>
-    </head>
+            let query = parseQuery(window.location.search, { type: 'release' });
+            
+            let res = await fetch("https://launchermeta.mojang.com/mc/game/version_manifest.json");
+            let j = await res.json()
+            
+            let versions = j.versions;
+            if (query) {
+                for (var prop in query) {
+                    versions = versions.filter(v => !v.hasOwnProperty(prop) || query[prop].includes(v[prop]));
+                }
+            }
+            versions.forEach(version => {
+                let delta = Date.now() - Date.parse(version.releaseTime);
+
+                let age = `Minecraft ${version.id} is ${new TimeDelta(delta)} old.`;
+                let link = "?id=" + version.id;
+                document.body.innerHTML += `<p class="version"><a href="${link}">${age}</a></p>`;
+            });
+            if (versions.length > 1) {
+                document.getElementById("intro").style.display = "initial";
+            }
+        }
+
+        window.onload = init;
+
+    </script>
+</head>
+
+<body>
+    <div id="intro" style="display: none;">
+        <p>
+            This page displays the age of any version of minecraft. Versions will be displayed
+            one line at a time. Click the line to go to the perma-link.
+        </p>
+        <p>
+            This page uses query parameters to filter versions. The specific versions can be specified with
+            <code>id</code>. For example, to display the age of version 1.12.2, you would use <code>?id=1.12.2</code>.
+        </p>
+        <p>
+            You can use any query which has a property in the <a href="https://launchermeta.mojang.com/mc/game/version_manifest.json">json</a>.
+        </p>
+        <hr/>
+    </div>
+
+</body>
+
 </html>
