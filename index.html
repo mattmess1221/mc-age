@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Minecraft Ages</title>
     <style>
         .version a:link,
         .version a:visited {
@@ -19,93 +19,36 @@
         .version {
             margin: 0;
         }
+        #intro {
+            display: none;
+        }
     </style>
-    <script>
-        function parseQuery(queryString, defaults = {}) {
-            var query = {};
-            var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
-            for (var i = 0; i < pairs.length; i++) {
-                var pair = pairs[i].split('=');
-                var key = decodeURIComponent(pair[0]);
-                var val = decodeURIComponent(pair[1] || '');
-                if (key) {
-                    query[key] = val.split(',');
-                }
-            }
-
-            return Object.keys(query).length > 0 ? query : defaults;
-        }
-
-        function TimeDelta(time) {
-            time /= 24 * 60 * 60 * 1000;
-            this.years = Math.floor(time / 365.25);
-
-            time %= 365.25;
-            this.months = Math.floor(time / 30.5);
-
-            time %= 30.5;
-            this.days = Math.floor(time);
-        }
-
-        TimeDelta.prototype.toString = function () {
-            let parts = [];
-            ["years", "months", "days"].forEach(p => {
-                var value = this[p];
-                var key = p.substr(0, p.length - 1);
-                if (value) {
-                    parts.push(`${value} ${key}${value > 1 ? "s" : ""}`);
-                }
-            });
-            return parts.join(", ");
-        };
-
-        async function init() {
-
-            let query = parseQuery(window.location.search, { type: 'release' });
-
-            let res = await fetch("https://launchermeta.mojang.com/mc/game/version_manifest.json");
-            let j = await res.json()
-
-            let versions = j.versions;
-            if (query) {
-                for (var prop in query) {
-                    versions = versions.filter(v => !v.hasOwnProperty(prop) || query[prop].includes(v[prop]));
-                }
-            }
-            versions.forEach(version => {
-                let delta = Date.now() - Date.parse(version.releaseTime);
-
-                let age = `Minecraft ${version.id} is ${new TimeDelta(delta)} old.`;
-                let link = "?id=" + version.id;
-                document.body.innerHTML += `<p class="version"><a href="${link}">${age}</a></p>`;
-            });
-            if (versions.length > 1) {
-                document.getElementById("intro").style.display = "initial";
-            }
-        }
-
-        window.onload = init;
-
-    </script>
+    <script src="mcage.js"></script>
 </head>
 
 <body>
-    <div id="intro" style="display: none;">
-        <p>
-            This page displays the age of any version of minecraft. Versions will be displayed
-            one line at a time. Click the line to go to the perma-link.
-        </p>
-        <p>
-            This page uses query parameters to filter versions. The specific versions can be specified with
-            <code>id</code>. For example, to display the age of version 1.12.2, you would use <code>?id=1.12.2</code>.
-        </p>
-        <p>
-            You can use any query which has a property in the <a
-                href="https://launchermeta.mojang.com/mc/game/version_manifest.json">json</a>.
-        </p>
-        <hr>
-    </div>
-
+<div id="intro">
+    <p>
+        This page displays the age of any version of Minecraft. Versions will be displayed
+        one line at a time. Click the line to go to the perma-link.
+    </p>
+    <p>
+        This page uses query parameters to filter versions. The specific versions can be specified with
+        <code>id</code>. For example, to display the age of version 1.12.2, you would use <code>?id=1.12.2</code>.
+    </p>
+    <p>
+        You can use any query which has a property in the
+        <a href="https://launchermeta.mojang.com/mc/game/version_manifest.json">json</a>.
+    </p>
+    <p>
+        <strong>Types:</strong>
+        <a href="?type=release">releases</a>
+        <a href="?type=snapshot">snapshots</a>
+        <a href="?type=old_beta">old_beta</a>
+        <a href="?type=old_alpha">old_alpha</a>
+        <a href="?type=">all</a>
+    </p>
+    <hr>
+</div>
 </body>
-
 </html>
