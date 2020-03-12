@@ -1,4 +1,5 @@
 const gulp = require('gulp');
+const copy = require('gulp-copy');
 const clean = require('gulp-clean');
 const ts = require('gulp-typescript');
 const minify = require('gulp-minify');
@@ -6,25 +7,32 @@ const sourcemaps = require('gulp-sourcemaps');
 
 let tsProject = ts.createProject('tsconfig.json');
 
-const distFolder = './dist/';
+const publicFolder = 'public';
 
-function cleanDist() {
-    return gulp.src(distFolder, {allowEmpty: true})
+function cleanPublic() {
+    return gulp.src(publicFolder, {allowEmpty: true})
         .pipe(clean());
 }
 
-function dist() {
+function buildTypescript() {
     return tsProject.src()
+        .pipe(gulp.dest(publicFolder + "/js"))
         .pipe(sourcemaps.init())
-        .pipe(gulp.dest(distFolder))
         .pipe(tsProject())
         .pipe(minify({
             ext: {min: '.min.js'}
         }))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(distFolder));
+        .pipe(gulp.dest(publicFolder + "/js"));
 }
 
-module.exports.cleanDist = cleanDist;
-module.exports.dist = gulp.series(this.cleanDist, dist);
-module.exports.default = this.dist;
+function copyResources() {
+    return gulp.src('./res/*')
+        .pipe(copy('.', {}))
+        .pipe(gulp.dest(publicFolder));
+}
+
+module.exports.cleanPublic = cleanPublic;
+module.exports.buildTypescript = buildTypescript;
+module.exports.copyResources = copyResources;
+module.exports.default = gulp.series(this.cleanPublic, gulp.parallel(this.copyResources, this.buildTypescript));
