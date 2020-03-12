@@ -3,7 +3,7 @@ name: website
 on:
   push:
     branches:
-      - web
+      - master
 
 jobs:
   publish:
@@ -26,7 +26,8 @@ jobs:
         if: success()
         uses: crazy-max/ghaction-github-pages@v1.3.0
         with:
+          repo: killjoy1221/killjoy1221.github.io
           target_branch: master
           build_dir: public
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
