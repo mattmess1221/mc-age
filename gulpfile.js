@@ -30,15 +30,22 @@ function copyResources() {
         .pipe(gulp.dest(publicFolder));
 }
 
-const defaultTask = gulp.series(cleanPublic, gulp.parallel(copyResources, buildTypescript));
+const build = gulp.parallel(copyResources, buildTypescript);
 
-function watch() {
-    return gulp.watch(["src/", "res/"], defaultTask);
+function watchSources() {
+    return gulp.watch(["src/", "res/"], build);
+}
+
+function watchPublic(cb) {
+    gulp.watch(publicFolder).on("change", (filepath) => {
+        return gulp.src(filepath, {read: false}).pipe(connect.reload());
+    });
+    cb();
 }
 
 function serve() {
     return connect.server({
-        root: 'public',
+        root: publicFolder,
         livereload: true
     });
 }
@@ -47,6 +54,6 @@ module.exports = {
     cleanPublic: cleanPublic,
     buildTypescript: buildTypescript,
     copyResources: copyResources,
-    serve: gulp.series(defaultTask, gulp.parallel(watch, serve)),
-    default: defaultTask
+    serve: gulp.series(cleanPublic, build, gulp.parallel(serve, watchSources, watchPublic)),
+    default: gulp.series(cleanPublic, build)
 };
