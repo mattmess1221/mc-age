@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Minecraft Ages</title>
+    <style>
+        .version a:link,
+        .version a:visited {
+            color: black;
+            text-decoration: none;
+        }
+
+        .version a:hover {
+            color: white;
+            background-color: grey;
+        }
+
+        .version {
+            margin: 0;
+        }
+        #intro {
+            display: none;
+        }
+    </style>
+    <script src="js/mcage.min.js"></script>
+</head>
+
+<body>
+<div id="intro">
+    <p>
+        This page displays the age of any version of Minecraft. Versions will be displayed
+        one line at a time. Click the line to go to the perma-link.
+    </p>
+    <p>
+        This page uses query parameters to filter versions. The specific versions can be specified with
+        <code>id</code>. For example, to display the age of version 1.12.2, you would use <code>?id=1.12.2</code>.
+    </p>
+    <p>
+        You can use any query which has a property in the
+        <a href="https://launchermeta.mojang.com/mc/game/version_manifest.json">json</a>.
+    </p>
+    <p>
+        <strong>Types:</strong>
+        <a href="?type=release">releases</a>
+        <a href="?type=snapshot">snapshots</a>
+        <a href="?type=old_beta">old_beta</a>
+        <a href="?type=old_alpha">old_alpha</a>
+        <a href="?type=">all</a>
+    </p>
+    <hr>
+</div>
+</body>
+</html>

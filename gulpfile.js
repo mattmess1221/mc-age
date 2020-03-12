@@ -1,5 +1,4 @@
 const gulp = require('gulp');
-const copy = require('gulp-copy');
 const clean = require('gulp-clean');
 const ts = require('gulp-typescript');
 const minify = require('gulp-minify');
@@ -27,8 +26,7 @@ function buildTypescript() {
 }
 
 function copyResources() {
-    return gulp.src('./res/*')
-        .pipe(copy('.', {}))
+    return gulp.src('./res/**/*')
         .pipe(gulp.dest(publicFolder));
 }
 
