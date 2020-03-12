@@ -43,7 +43,7 @@
                     parts.push(`${value} ${key}${value > 1 ? "s" : ""}`);
                 }
             });
-            return parts.join(", ");
+            return parts.join(", ") || "0 days";
         }
     }
 
