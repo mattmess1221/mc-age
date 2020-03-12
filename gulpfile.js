@@ -3,7 +3,7 @@ const clean = require('gulp-clean');
 const ts = require('gulp-typescript');
 const minify = require('gulp-minify');
 const sourcemaps = require('gulp-sourcemaps');
-const webserver = require('gulp-webserver');
+const connect = require('gulp-connect');
 
 let tsProject = ts.createProject('tsconfig.json');
 
@@ -37,12 +37,10 @@ function watch() {
 }
 
 function serve() {
-    return gulp.src(publicFolder)
-        .pipe(webserver({
-            livereload: true,
-            directoryListing: false,
-            open: true
-        }))
+    return connect.server({
+        root: 'public',
+        livereload: true
+    });
 }
 
 module.exports = {
