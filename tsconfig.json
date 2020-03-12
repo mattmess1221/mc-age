@@ -3,6 +3,7 @@
     "module": "commonjs",
     "target": "es6",
     "sourceMap": true,
+    "outDir": "dist",
     "lib": ["es6", "dom"]
   },
   "include": [
