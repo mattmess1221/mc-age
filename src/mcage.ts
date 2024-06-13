@@ -1,54 +1,59 @@
 import "./mcage.css";
 
-(async function () {
-    interface Manifest {
-        latest: {
-            release: string;
-            snapshot: string;
-        };
-        versions: {
-            id: string
-            type: string
-            url: string
-            time: string
-            releaseTime: string
-        }[];
-    }
+interface Manifest {
+    latest: {
+        release: string;
+        snapshot: string;
+    };
+    versions: {
+        id: string
+        type: string
+        url: string
+        time: string
+        releaseTime: string
+    }[];
+}
 
-    async function get_manifest(): Promise<Manifest> {
-        let res = await fetch("https://launchermeta.mojang.com/mc/game/version_manifest.json");
+async function get_manifest(): Promise<Manifest> {
+    try {
+        const res = await fetch("https://launchermeta.mojang.com/mc/game/version_manifest.json");
         return await res.json();
+    } catch (e) {
+        alert(`Error: ${e}`)
+        throw e;
+    }
+}
+
+class TimeDelta {
+    years: number;
+    months: number;
+    days: number;
+
+    constructor(time: number) {
+        time /= 24 * 60 * 60 * 1000;
+        this.years = Math.floor(time / 365.25);
+
+        time %= 365.25;
+        this.months = Math.floor(time / 30.5);
+
+        time %= 30.5;
+        this.days = Math.floor(time);
     }
 
-    class TimeDelta {
-        years: number;
-        months: number;
-        days: number;
-
-        constructor(time: number) {
-            time /= 24 * 60 * 60 * 1000;
-            this.years = Math.floor(time / 365.25);
-
-            time %= 365.25;
-            this.months = Math.floor(time / 30.5);
-
-            time %= 30.5;
-            this.days = Math.floor(time);
-        }
-
-        toString() {
-            let parts = [];
-            ["years", "months", "days"].forEach(p => {
-                let value = this[p];
-                let key = p.substr(0, p.length - 1);
-                if (value) {
-                    parts.push(`${value} ${key}${value > 1 ? "s" : ""}`);
-                }
-            });
-            return parts.join(", ") || "0 days";
-        }
+    toString() {
+        let parts = [];
+        ["years", "months", "days"].forEach(p => {
+            let value = this[p];
+            let key = p.substr(0, p.length - 1);
+            if (value) {
+                parts.push(`${value} ${key}${value > 1 ? "s" : ""}`);
+            }
+        });
+        return parts.join(", ") || "0 days";
     }
+}
 
+document.addEventListener("DOMContentLoaded", async () => {
     const params = new URLSearchParams(window.location.search);
 
     const filterableProperties = ["id", "type"];
@@ -57,9 +62,8 @@ import "./mcage.css";
         params.set("type", "release");
     }
 
-    const manifest = await get_manifest();
+    let { versions } = await get_manifest();
 
-    let versions = manifest.versions;
     for (const p of filterableProperties) {
         if (params.get(p)) {
             versions = versions.filter(v => params.get(p) === v[p]);
@@ -71,9 +75,17 @@ import "./mcage.css";
         let age = `Minecraft ${version.id} is ${new TimeDelta(delta)} old.`;
         let link = "?id=" + version.id;
 
-        document.body.innerHTML += `<p class="version"><a href="${link}">${age}</a></p>`;
+        const a = document.createElement("a")
+        a.href = link
+        a.innerText = age
+
+        const p = document.createElement("p")
+        p.classList.add("version")
+        p.append(a)
+
+        document.body.append(p)
     });
     if (versions.length > 1) {
         document.getElementById("intro").style.display = "initial";
     }
-})();
+});
