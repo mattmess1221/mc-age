@@ -24,8 +24,7 @@ jobs:
       - name: GitHub Pages
         uses: crazy-max/ghaction-github-pages@v4
         with:
-          repo: killjoy1221/killjoy1221.github.io
-          target_branch: master
+          target_branch: gh-pages
           build_dir: dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
