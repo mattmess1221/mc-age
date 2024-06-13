@@ -19,7 +19,7 @@ jobs:
 
       - name: Build
         run: |
-          pnpm build --outdir _site
+          pnpm build --outDir _site
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
