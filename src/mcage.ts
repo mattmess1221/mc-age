@@ -1,3 +1,5 @@
+import "./mcage.css";
+
 (async function () {
     interface Manifest {
         latest: {
