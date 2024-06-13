@@ -22,11 +22,10 @@ jobs:
           pnpm build
 
       - name: GitHub Pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v1.3.0
+        uses: crazy-max/ghaction-github-pages@v4
         with:
           repo: killjoy1221/killjoy1221.github.io
           target_branch: master
           build_dir: dist
         env:
-          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
