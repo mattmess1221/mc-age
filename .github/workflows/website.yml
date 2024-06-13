@@ -12,15 +12,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Setup Node
-        uses: actions/setup-node@v1
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: '13.x'
-      - name: Install Dependencies
-        run: npm install
+          run_install: true
 
       - name: Build
-        run: gulp
+        run: |
+          pnpm build
 
       - name: GitHub Pages
         if: success()
