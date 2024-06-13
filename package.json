@@ -14,12 +14,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/killjoy1221/killjoy1221.github.io.git"
+    "url": "git+https://github.com/killjoy1221/mc-age.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/killjoy1221/killjoy1221.github.io/issues"
+    "url": "https://github.com/killjoy1221/mc-age/issues"
   },
-  "homepage": "https://github.com/killjoy1221/killjoy1221.github.io#readme"
+  "homepage": "https://killjoy1221.github.io/mc-age"
 }
