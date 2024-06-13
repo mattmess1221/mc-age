@@ -2,6 +2,7 @@
   "name": "killjoy1221.github.io",
   "version": "1.0.0",
   "description": "",
+  "packageManager": "pnpm@9.3.0",
   "main": "gulpfile.js",
   "dependencies": {},
   "devDependencies": {
