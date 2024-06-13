@@ -27,6 +27,6 @@ jobs:
         with:
           repo: killjoy1221/killjoy1221.github.io
           target_branch: master
-          build_dir: public
+          build_dir: dist
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
