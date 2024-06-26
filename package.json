@@ -1,25 +1,27 @@
 {
   "name": "killjoy1221.github.io",
-  "version": "1.0.0",
-  "description": "",
-  "packageManager": "pnpm@9.3.0",
   "type": "module",
-  "devDependencies": {
-    "typescript": "^5.4.5",
-    "vite": "^5.3.0"
+  "version": "1.0.0",
+  "packageManager": "pnpm@9.3.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://killjoy1221.github.io/mc-age",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/killjoy1221/mc-age.git"
+  },
+  "bugs": {
+    "url": "https://github.com/killjoy1221/mc-age/issues"
   },
   "scripts": {
     "dev": "vite dev",
     "build": "vite build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/killjoy1221/mc-age.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/killjoy1221/mc-age/issues"
-  },
-  "homepage": "https://killjoy1221.github.io/mc-age"
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.21.1",
+    "eslint": "^9.5.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.3.0"
+  }
 }

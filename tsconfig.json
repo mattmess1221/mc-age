@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "target": "es6",
-    "noEmit": true,
+    "lib": ["es6", "dom"],
     "rootDir": "src",
-    "lib": ["es6", "dom"]
+    "module": "commonjs",
+    "noEmit": true
   },
   "include": [
     "src"
