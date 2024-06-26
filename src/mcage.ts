@@ -44,7 +44,7 @@ class TimeDelta {
         let parts = [];
         ["years", "months", "days"].forEach(p => {
             let value = this[p];
-            let key = p.substr(0, p.length - 1);
+            let key = p.substring(0, p.length - 1);
             if (value) {
                 parts.push(`${value} ${key}${value > 1 ? "s" : ""}`);
             }
