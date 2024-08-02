@@ -2,7 +2,7 @@
   "name": "killjoy1221.github.io",
   "type": "module",
   "version": "1.0.0",
-  "packageManager": "pnpm@9.3.0",
+  "packageManager": "pnpm@9.6.0",
   "description": "",
   "author": "",
   "license": "ISC",
@@ -19,9 +19,9 @@
     "build": "vite build"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.21.1",
-    "eslint": "^9.5.0",
-    "typescript": "^5.4.5",
-    "vite": "^5.3.0"
+    "@antfu/eslint-config": "^2.24.1",
+    "eslint": "^9.8.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.3.5"
   }
 }

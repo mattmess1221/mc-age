@@ -14,7 +14,7 @@ interface Manifest {
   }[]
 }
 
-async function get_manifest(): Promise<Manifest> {
+async function getManifest(): Promise<Manifest> {
   try {
     const res = await fetch('https://launchermeta.mojang.com/mc/game/version_manifest.json')
     return await res.json()
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     params.set('type', 'release')
   }
 
-  let { versions } = await get_manifest()
+  let { versions } = await getManifest()
 
   for (const p of filterableProperties) {
     if (params.get(p)) {
